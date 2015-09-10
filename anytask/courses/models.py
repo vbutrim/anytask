@@ -14,6 +14,7 @@ from django.db.models.signals import post_save
 from groups.models import Group
 from issues.model_issue_field import IssueField
 from years.models import Year
+from django.contrib.auth.models import User
 
 def add_group_with_extern(sender, instance, **kwargs):
     instance.add_group_with_extern()
@@ -217,9 +218,9 @@ def add_default_issue_fields(sender, instance, action, **kwargs):
         return
 
 class DefaultTeacher(models.Model):
-    teacher = models.ForeignKey(User, db_index=True, null=True, blank=True)
-    course = models.ForeignKey(Course, db_index=True, null=False, blank=False)
-    group = models.ForeignKey(Group, db_index=False, null=True, blank=True)
+    teacher = models.ForeignKey(User, db_index=False, null=True, blank=False)
+    course = models.ForeignKey(Course, db_index=True, null=True, blank=False)
+    group = models.ForeignKey(Group, db_index=True, null=True, blank=False)
 
 
 m2m_changed.connect(add_default_issue_fields, sender=Course.issue_fields.through)

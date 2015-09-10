@@ -11,6 +11,7 @@ from django.template.context import RequestContext
 from issues.forms import FileForm
 from issues.models import Issue, Event, upload_review
 from issues.model_issue_field import IssueField
+from courses.models import DefaultTeacher
 
 
 def user_is_teacher_or_staff(user, issue):
@@ -93,6 +94,9 @@ def get_or_create(request, task_id, student_id):
         return HttpResponseForbidden()
 
     issue, created = Issue.objects.get_or_create(task_id=task_id, student_id=student_id)
+
+    for dteacher in DefaultTeacher.objects.filter(course=issue.task.course, group=issue.task.group):
+        issue.responsible = dteacher.teacher
 
     data = {
         'issue_url': issue.get_absolute_url(),
