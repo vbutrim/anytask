@@ -216,4 +216,10 @@ def add_default_issue_fields(sender, instance, action, **kwargs):
         instance.issue_fields.remove(*default_issue_fields.get_issue_fields())
         return
 
+class DefaultTeacher(models.Model):
+    teacher = models.ForeignKey(User, db_index=True, null=True, blank=True)
+    course = models.ForeignKey(Course, db_index=True, null=False, blank=False)
+    group = models.ForeignKey(Group, db_index=False, null=True, blank=True)
+
+
 m2m_changed.connect(add_default_issue_fields, sender=Course.issue_fields.through)
