@@ -1,4 +1,4 @@
-from courses.models import Course, FilenameExtension
+from courses.models import Course, FilenameExtension, DefaultTeacher
 from django.contrib import admin
 
 class CourseAdmin(admin.ModelAdmin):
@@ -9,3 +9,4 @@ class CourseAdmin(admin.ModelAdmin):
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(FilenameExtension)
+admin.site.register(DefaultTeacher)

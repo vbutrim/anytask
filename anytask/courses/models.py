@@ -218,6 +218,7 @@ def add_default_issue_fields(sender, instance, action, **kwargs):
         return
 
 class DefaultTeacher(models.Model):
+    name = models.CharField(max_length=254, db_index=True, null=False, blank=False)
     teacher = models.ForeignKey(User, db_index=False, null=True, blank=False)
     course = models.ForeignKey(Course, db_index=True, null=True, blank=False)
     group = models.ForeignKey(Group, db_index=True, null=True, blank=False)
