@@ -11,11 +11,17 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, db_index=True, null=False, blank=False, unique=True)
     second_name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
 
+    age = models.IntegerField(null=True, blank=True) 
+
     unit = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
     position = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
     academic_degree = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
     academic_title = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
-
+    university = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
+    city = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
+    skills = models.CharField(default="", max_length=256, unique=False, null=True, blank=True)    
+    biography = models.CharField(default="", max_length=512, unique=False, null=True, blank=True)
+    
     added_time = models.DateTimeField(auto_now_add=True, default=datetime.now)
     update_time = models.DateTimeField(auto_now=True, default=datetime.now)
 
