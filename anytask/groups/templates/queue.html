@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block title %}Список групп{% endblock %}
+
+{% block content %}
+  {{ block.super }}
+
+  <ul type="circle">
+    {% for group in groups_list %}
+      <li><a href="">{{ group.name }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
