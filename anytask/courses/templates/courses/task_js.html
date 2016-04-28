@@ -2,6 +2,7 @@
 <script src="http://malsup.github.io/jquery.form.js"></script>
 <script src="{{ STATIC_URL }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
 <script src="{{ STATIC_URL }}jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -215,6 +216,15 @@
 
         var href_string = "javascript:edit_course_info(" + course_id + ");";
         $('#modal_course_info_ok').attr('href', href_string);
+
+        //CHANGE IT
+        $("#modal_body_preview").css('display', 'none');
+        $("#modal_course_info_preview").on("click", function (e) {
+            //
+            $("#modal_body_preview")
+            //
+            $("#modal_body_preview").css('display', 'block');
+        });
 
         $('#modal_course_information').modal('show');
     }
