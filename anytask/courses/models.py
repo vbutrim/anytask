@@ -16,6 +16,9 @@ from issues.model_issue_field import IssueField
 from years.models import Year
 from anyrb.common import RbReviewGroup
 
+from markdown import markdown
+
+
 def add_group_with_extern(sender, instance, **kwargs):
     instance.add_group_with_extern()
 
@@ -60,6 +63,7 @@ class Course(models.Model):
     name_id = models.CharField(max_length=254, db_index=True, null=True, blank=True)
 
     information = models.TextField(db_index=False, null=True, blank=True)
+    information_html = models.TextField(editable=False, db_index=False, null=True, blank=True, default='')
 
     year = models.ForeignKey(Year, db_index=True, null=False, blank=False, default=datetime.now().year)
 
@@ -140,6 +144,10 @@ class Course(models.Model):
         return False
 
     def save(self, *args, **kwargs):
+        #self.information_html = markdown(self.information)
+        self.information_html = self.information.replace("\\\\", "latex2slashes")
+        self.information_html = markdown(self.information_html)
+        self.information_html = self.information_html.replace("latex2slashes", "\\\\")
         super(Course, self).save(*args, **kwargs)
         self.add_group_with_extern()
 

@@ -10,6 +10,14 @@
     <script src="{{ STATIC_URL }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
     <script src="{{ STATIC_URL }}jquery-metadata/jquery.metadata.js"></script>
     <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+    }
+  });
+</script>
 
     <link href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
@@ -28,7 +36,7 @@
       .sidebar-nav {
         padding: 9px 0;
       }
-      
+
       .breadcrumb_button {
         position: absolute;
         right: 55px;
@@ -37,7 +45,7 @@
       table {
       //table-layout: fixed;
       }
-      
+
       /* Automatic Serial Number Row */
       .css-serial {
         counter-reset: serial-number; /* Set the serial number counter to 0 */
@@ -61,7 +69,7 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      
+
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>

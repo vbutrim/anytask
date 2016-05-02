@@ -32,8 +32,8 @@
 
 {% block content %}
   {{ block.super }}
-    {% if course.information %}
-      {{ course.information|urlize|sanitize|safe }}
+    {% if course.information_html %}
+      {{ course.information_html|safe }}
       <br>
     {% endif %}
 
