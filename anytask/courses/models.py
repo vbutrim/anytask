@@ -144,7 +144,6 @@ class Course(models.Model):
         return False
 
     def save(self, *args, **kwargs):
-        #self.information_html = markdown(self.information)
         self.information_html = self.information.replace("\\\\", "latex2slashes")
         self.information_html = markdown(self.information_html)
         self.information_html = self.information_html.replace("latex2slashes", "\\\\")
