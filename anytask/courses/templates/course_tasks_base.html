@@ -22,7 +22,7 @@
                 </div>
             </div>
             <hr />
-            
+
             <div id="modal_scored_task_other_text"></div>
             <div id="modal_scored_comments" class="hide well"></div>
 
@@ -46,7 +46,7 @@
             <div name="status_body">
                 <div>
                     <label class="help-inline" for="modal_current_status"> Текущий статус: </label>
-                    <span type="" id="modal_current_status"> </span> 
+                    <span type="" id="modal_current_status"> </span>
                 </div>
                 <div class="radio">
                 </div>
@@ -82,8 +82,8 @@
     </div>
     <div class="modal-body">
         <div name="status_body">
-            <form action="{% url tasks.views.update_status_check %}" 
-                    method="post" id="modal-score-form" 
+            <form action="{% url tasks.views.update_status_check %}"
+                    method="post" id="modal-score-form"
                     class="form-horizontal" style="margin-bottom: 0px;">
                 {% csrf_token %}
                 <input type="hidden" name="student_id"> </input>

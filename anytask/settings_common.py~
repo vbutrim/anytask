@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'filemanager',
     'schools',
     'jfu',
+    'markdownlib',
 )
 
 AUTH_PROFILE_MODULE = "users.UserProfile"

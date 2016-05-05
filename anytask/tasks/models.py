@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 
 from datetime import timedelta
 import copy
+from markdown import markdown
+
 
 class Task(models.Model):
     title = models.CharField(max_length=254, db_index=True, null=True, blank=True)
@@ -269,4 +271,3 @@ def task_taken_save_to_log_pre_delete(sender, instance, **kwargs):
 post_save.connect(task_save_to_log_post_save, sender=Task)
 post_save.connect(task_taken_save_to_log_post_save, sender=TaskTaken)
 pre_delete.connect(task_taken_save_to_log_pre_delete, sender=TaskTaken)
-

@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'filemanager',
     'schools',
     'jfu',
+    'markdownlib',
 )
 
 AUTH_PROFILE_MODULE = "users.UserProfile"
@@ -157,7 +158,7 @@ ANYSVN_SVN_URL_PREFIX = "/svn/"
 ANYSVN_REPOS_PATH = "../svn/user_repos"
 ANYSVN_REFFERENCE_REPO = "../new_repo" #for new svns
 
-RB_API_URL = "http://localhost:8080"
+RB_API_URL = "http://localhost:8081"
 RB_API_USERNAME = "anytask"
 RB_API_PASSWORD = "P@ssw0rd"
 RB_API_DEFAULT_REVIEW_GROUP = 'teachers'

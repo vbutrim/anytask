@@ -104,8 +104,9 @@
         if (mode == 'text')
         {
             $('#modal_header_task_descr').html(task_title);
+            // look herey
             $('#modal_body_task_descr').html(task_text_to_show);
-            
+
             if (is_teacher == 'True')
             {
                 $('#modal_task_body_edit').val(task_text_to_edit);
@@ -120,7 +121,7 @@
                 }
                 $('#modal_task_group [value="'+ group_id +'"]').attr('selected', 'selected');
                 $('#modal-edite-task-form').attr('action', '{% url courses.views.edit_task %}');
-        
+
                 $('#edit_task_descr').show();
             }
             else
@@ -147,33 +148,33 @@
                 }
                 $('#modal_task_group [value="'+ group_id +'"]').attr('selected', 'selected');
                 $('#modal-edite-task-form').attr('action', '{% url courses.views.edit_task %}');
-        
+
                 $('#modal_task_desc_edit').show();
-        
+
             }
         }
-    
+
         $('#modal_task_description').modal('show');
     }
-    
+
     function get_add_task_modal(course_id, group_id, parent_id, is_teacher)
     {
         clear();
         if (is_teacher == 'True')
-        {   
+        {
             $('#modal_task_desc_text').hide();
-            
+
             $('#modal-edite-task-form').attr('action', '{% url courses.views.add_task %}');
-            
+
             $('#modal_edit_task_course_id').val(course_id);
             if (group_id) {
                 $('#modal_edit_task_group_id').val(group_id);
             }
             $('#modal_task_group [value="'+ group_id +'"]').attr('selected', 'selected');
             $('#modal_edit_task_parent_id').val(parent_id);
-        
+
             $('#modal_task_desc_edit').show();
-        
+
             $('#modal_task_description').modal('show');
         }
     }
@@ -218,6 +219,7 @@
         $('#modal_course_info_ok').attr('href', href_string);
 
         //CHANGE IT
+        /*
         $("#modal_body_preview").css('display', 'none');
         $("#modal_course_info_preview").on("click", function (e) {
             //
@@ -225,6 +227,7 @@
             //
             $("#modal_body_preview").css('display', 'block');
         });
+        */
 
         $('#modal_course_information').modal('show');
     }
@@ -254,4 +257,98 @@
 
     }
 
+</script>
+
+<script src="{{ STATIC_URL }}lib/marked.js"></script>
+<script>
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false, // IMPORTANT, because we do MathJax before markdown,
+                   //            however we do escaping in 'CreatePreview'.
+  smartLists: true,
+  smartypants: false
+});
+</script>
+
+<script>
+var Preview = {
+  delay: 50,        // delay after keystroke before updating
+
+  preview: null,     // filled in by Init below
+  buffer: null,      // filled in by Init below
+
+  timeout: null,     // store setTimout id
+  mjRunning: false,  // true when MathJax is processing
+  oldText: null,     // used to check if an update is needed
+
+  Init: function () {
+    this.preview = document.getElementById("marked-mathjax-preview");
+    this.buffer = document.getElementById("marked-mathjax-preview-buffer");
+    this.textarea = document.getElementById("course_information");
+  },
+
+  SwapBuffers: function () {
+    var buffer = this.preview;
+    var preview = this.buffer;
+    this.buffer = buffer;
+    this.preview = preview;
+    buffer.style.display = "none";
+    buffer.style.position = "absolute";
+    preview.style.position = "";
+    preview.style.display = "";
+  },
+
+  Update: function () {
+    if (this.timeout) {clearTimeout(this.timeout)}
+    this.timeout = setTimeout(this.callback,this.delay);
+  },
+
+  CreatePreview: function () {
+    Preview.timeout = null;
+    if (this.mjRunning) return;
+    var text = this.textarea.value;
+    if (text === this.oldtext) return;
+    text = this.Escape(text);                       //Escape tags before doing stuff
+    this.buffer.innerHTML = this.oldtext = text;
+    this.mjRunning = true;
+    MathJax.Hub.Queue(
+      ["Typeset",MathJax.Hub,this.buffer],
+      ["PreviewDone",this],
+      ["resetEquationNumbers", MathJax.InputJax.TeX]
+    );
+  },
+
+  PreviewDone: function () {
+    this.mjRunning = false;
+    text = this.buffer.innerHTML;
+    text = text.replace(/^&gt;/mg, '>');
+    this.buffer.innerHTML = marked (text);
+    this.SwapBuffers();
+  },
+
+  Escape: function (html, encode) {
+    return html
+      .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+     .replace(/'/g, '&#39;');
+  },
+
+  UpdateKeyPress: function (event) {
+    if (event.keyCode < 16 || event.keyCode > 47) {
+      this.preview.innerHTML = '<p>' + marked(this.textarea.value) + '</p>';
+      this.buffer.innerHTML = '<p>' + marked(this.textarea.value) + '</p>';
+    }
+    this.Update();
+  }
+
+};
+
+Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+Preview.callback.autoReset = true;
 </script>
