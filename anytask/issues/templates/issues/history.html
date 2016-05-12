@@ -27,7 +27,7 @@
           </div>
           {% autoescape off %}
           <p>
-            {{ event.get_message|urlize|sanitize }}
+            {{ event.get_message|safe }}
           </p>
           {% endautoescape %}
           {% if event.file_set.all %}
@@ -61,13 +61,27 @@
       <input type="hidden" name="form_name" value="comment_form">
       <div id="file_field">
           {{ issue_fields.0.form }}
-      </div>
       <button type="button" class="btn" onClick="add_file_field()">+</button>
       {% if not teacher_or_staff and issue.status == issue.STATUS_ACCEPTED %}
         <button class="btn pull-right" type="submit" name="need_info">Задать вопрос</button>
       {% endif %}
       <button class="btn pull-right" type="submit">Отправить (ctrl+enter)</button>
+    </div>
+
+    <div id="modal_body_preview">
+          <!-- -->
+        <h4 id="modal_course_preview_information_header">Превью</h4>
+        <div class="preview" id="marked-mathjax-preview"></div>
+        <div class="preview" id="marked-mathjax-preview-buffer"
+               style="display:none;
+               position:absolute;
+               top:0; left: 0"></div>
+
+          <script>
+            Preview.Init();
+            Preview.Update();
+         </script>
+    </div>
     </fieldset>
   </form>
 </div>
-

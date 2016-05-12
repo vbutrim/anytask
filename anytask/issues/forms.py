@@ -107,6 +107,7 @@ class CommentForm(DefaultForm):
         'placeholder': _('Comment...'),
         'class': 'span12',
         'rows': '4',
+        'onkeyup': 'Preview.Update()'
     }
 
     comment = forms.CharField(max_length=2500,

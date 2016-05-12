@@ -2,7 +2,21 @@
 <script src="http://malsup.github.io/jquery.form.js"></script>
 <script src="{{ STATIC_URL }}jquery.tablesorter/jquery.tablesorter.min.js"></script>
 <script src="{{ STATIC_URL }}jquery.stickytableheaders.min.js"></script>
+<script src="{{ STATIC_URL }}lib/marked.js"></script>
 <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+});
+</script>
+
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -104,8 +118,32 @@
         if (mode == 'text')
         {
             $('#modal_header_task_descr').html(task_title);
-            // look herey
-            $('#modal_body_task_descr').html(task_text_to_show);
+            // look here
+            var task_text_to_format = task_text_to_show
+            task_text_to_format = task_text_to_format
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+
+
+            //$('#modal_body_task_descr').html(task_text_to format);
+            var divTaskDescr = document.getElementById("modal_body_task_descr");
+            divTaskDescr.innerHTML = marked(task_text_to_format)
+
+            function MakeMarkdown(text) {
+              text = text.replace(/^&gt;/mg, '>');
+              text = marked(text)
+
+              var divTaskDescr = document.getElementById("modal_body_task_descr");
+            //  divTaskDescr.innerHTML = marked(text)
+
+            //  $('#modal_body_task_descr').html(text);
+            }
+
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "divTaskDescr"],
+                              [MakeMarkdown, task_text_to_format],
+                              ["resetEquationNumbers", MathJax.InputJax.TeX]);
 
             if (is_teacher == 'True')
             {
@@ -218,17 +256,6 @@
         var href_string = "javascript:edit_course_info(" + course_id + ");";
         $('#modal_course_info_ok').attr('href', href_string);
 
-        //CHANGE IT
-        /*
-        $("#modal_body_preview").css('display', 'none');
-        $("#modal_course_info_preview").on("click", function (e) {
-            //
-            $("#modal_body_preview")
-            //
-            $("#modal_body_preview").css('display', 'block');
-        });
-        */
-
         $('#modal_course_information').modal('show');
     }
 
@@ -257,21 +284,6 @@
 
     }
 
-</script>
-
-<script src="{{ STATIC_URL }}lib/marked.js"></script>
-<script>
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false, // IMPORTANT, because we do MathJax before markdown,
-                   //            however we do escaping in 'CreatePreview'.
-  smartLists: true,
-  smartypants: false
-});
 </script>
 
 <script>

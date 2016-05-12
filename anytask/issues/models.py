@@ -21,6 +21,8 @@ from unidecode import unidecode
 import uuid
 import requests
 
+from markdown import markdown
+
 def get_file_path(instance, filename):
     return '/'.join(['files', str(uuid.uuid4()), filename])
 
@@ -317,7 +319,7 @@ class Issue(models.Model):
         """
         :returns event objects
         """
-        events = Event.objects.filter(issue_id=self.id).exclude(Q(author__isnull=True) | 
+        events = Event.objects.filter(issue_id=self.id).exclude(Q(author__isnull=True) |
                     Q(field__name='review_id')).order_by('timestamp')
         return events
 
@@ -348,7 +350,15 @@ class Event(models.Model):
         if self.field.history_message:
             message.append(self.field.history_message)
         message.append(self.value)
-        return ' '.join(message)
+
+        messageWithMarkdown = list()
+        for eachMessage in message:
+            messageToAppend = eachMessage.replace("\\\\", "latex2slashes")
+            messageToAppend = markdown(messageToAppend)
+            messageToAppend = messageToAppend.replace("latex2slashes", "\\\\")
+
+            messageWithMarkdown.append(messageToAppend)
+        return ' '.join(messageWithMarkdown)
 
     def get_notify_message(self):
         message = list()
@@ -368,7 +378,7 @@ class Event(models.Model):
 
     def is_change(self):
         return self.field.name != 'comment'
-        
+
 #    def save(self, *a, **ka):
 #        import traceback
 #        traceback.print_stack()
